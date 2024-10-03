@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{he_fo_us::head}"></head>
+    <body class="d-flex flex-column min-vh-100"> <!-- flex y min-vh-100 para que el body ocupe toda la altura -->
+        <div th:insert="~{he_fo_us::header}"></div>
+
+        <!-- Contenido Principal -->
+        <main class="flex-grow-1">
+            <div class="container mt-5 my-5">
+                <div class="row">
+                    <div class="col-12 text-center">
+                    </div>
+                </div>
+                <div class="row justify-content-center mt-4">
+                    <div class="col-md-3" th:each="product : ${products}">
+                        <a th:href="@{/order-details/product/{id}(id=${product.id})}" class="no-underline">
+                            <div class="card mb-3">
+                                <div class="image1-container">
+                                    <img th:src="@{/images/{image}(image=${product.image})}" class="card-img-top" alt="Imagen del producto"
+                                         th:if="${product.image != null}"/>
+                                    <img src="/images/default.png" class="card-img-top" alt="Imagen del producto" th:if="${product.image == null}"/>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-title"><strong>[[${product.name}]]</strong></p>
+                                    <p class="card-text">S/ [[${product.price}]]</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div th:insert="~{he_fo_us::footer}"></div>
+    </body>
+</html>
+

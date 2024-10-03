@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{he_fo_us::head}"></head>
+    <body class="d-flex flex-column min-vh-100">
+        <div th:insert="~{he_fo_us::header}"></div>
+
+        <main class="flex-grow-1">
+            <div class="container mt-5">
+                <h2 class="text-center">Historial de Compras</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio Unitario</th>
+                                <th>Total</th>
+                                <th>Fecha de Envío</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="detail : ${purchasedDetails}">
+                                <td th:text="${detail.product.name}"></td>
+                                <td th:text="${detail.quantity}"></td>
+                                <td th:text="${detail.price} + ' soles'"></td>
+                                <td th:text="${detail.price.multiply(detail.quantity)} + ' soles'"></td>
+                                <td>
+                                    <a href="#" class="btn btn-outline-primary"> <i class="fa-solid fa-truck-fast"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+
+        <div th:insert="~{he_fo_us::footer}"></div>
+    </body>
+</html>

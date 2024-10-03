@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{he_fo_us::head}"></head>
+    <body>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-4 d-flex justify-content-end">
+                    <!-- Cuadro con sombra y bordes ovalados -->
+                    <div class="card p-4 shadow-lg" style="border-radius: 20px; max-width: 400px;">
+                        <a th:href="@{/}" class="d-flex justify-content-center mb-3">
+                            <img th:src="@{/img/logo2.png}" alt="Logo" class="img-fluid" style="max-width: 150px;">
+                        </a>
+                        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+                        <form action="/login" method="post">
+                            <div class="mb-3 position-relative">
+                                <label for="email" class="form-label">Correo Electrónico</label>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fa-solid fa-at"></i>
+                                    </button>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 position-relative">
+                                <label for="password" class="form-label">Contraseña</label>
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-primary">
+                                        <i class="fa-solid fa-key"></i>
+                                    </button>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <button type="button" class="btn btn-outline-secondary" onclick="togglePassword()">
+                                        <i id="toggleIcon" class="fa fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-outline-info w-100">Ingresar <i class="fa-regular fa-share-from-square"></i></button>
+                        </form>
+                        <br>
+                        <div class="col-12">
+                            <p class="m-0 text-secondary text-center">¿No tienes una cuenta? 
+                                <a href="/register" class="link-primary text-decoration-none">Regístrate</a>
+                            </p>
+                        </div>
+                        <br>
+                        <!-- Alerta de error -->
+                        <div th:if="${param.error}" class="alert alert-danger text-center" role="alert">
+                            <span th:text="${param.error == 'user_not_found' ? 'Usuario no encontrado.' : 
+                                  param.error == 'invalid_password' ? 'Contraseña incorrecta.' : 'Error al iniciar sesión.'}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script th:src="@{/js/login.js}" type="text/javascript"></script>
+</html>

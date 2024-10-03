@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{he_fo_us::head}">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+        <style>
+            .hero {
+                background-color: #f8f9fa;
+                padding: 30px 0;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+            .card {
+                border: none;
+                border-radius: 10px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .table th {
+                background-color: #e9ecef;
+            }
+        </style>
+    </head>
+    <body class="d-flex flex-column min-vh-100">
+        <div th:insert="~{he_fo_us::header}"></div>
+        <main class="flex-grow-1">
+            <div class="container mt-5 my-5">
+                <div class="hero text-center mb-5">
+                    <h2 class="mb-4">Proceso de Pago - Yape</h2>
+                    <p class="lead">Realiza tu pago de forma rápida y sencilla utilizando Yape.</p>
+                </div>
+                <div class="row">
+                    <!-- Columna Izquierda: Yape QR -->
+                    <div class="col-md-6 text-center">
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text"><strong>N°: 928 581 983</strong></p>
+                                <img src="/images/yape.jpg" alt="QR Yape" class="img-fluid mb-3" style="max-width: 300px;">
+                                <h4 class="fw-bold"><strong>Total a pagar:</strong> S/ <span th:text="${totalAmount}"></span></h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Detalles del Pago -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Detalles del Usuario</h5>
+                                <p><span th:text="${user.username}"></span></p>
+                                <p><span th:text="${user.email}"></span></p>
+
+                                <h5 class="mt-4">Productos a Comprar</h5>
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Producto</th>
+                                            <th>Precio</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item : ${cart}">
+                                            <td th:text="${item.product.name}"></td>
+                                            <td>S/ <span th:text="${item.product.price}"></span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                                <!-- Subir Imagen del Comprobante -->
+                                <form action="/checkout" method="post" enctype="multipart/form-data">
+                                    <div class="mb-3">
+                                        <label for="shippingAddress" class="form-label">Dirección de Envío</label>
+                                        <input type="text" class="form-control" id="shippingAddress" name="shippingAddress" placeholder="Ingrese su dirección de envío" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="imagePago" class="form-label">Subir Comprobante</label>
+                                        <input type="file" class="form-control" id="imagePago" name="file" required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Confirmar Pago</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div th:insert="~{he_fo_us::footer}"></div>
+    </body>
+    
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head th:insert="~{he_fo_ad::head}"></head>
+    <body class="d-flex flex-column min-vh-100"> <!-- flex y min-vh-100 para que el body ocupe toda la altura -->
+        <div th:insert="~{he_fo_ad::header}"></div>
+
+        <main class="flex-grow-1">
+            <div id="productForm">
+                <div class="container mt-5 my-5">
+                    <div class="row justify-content-center">
+                        <!-- Formulario Agregar Categoría (lado izquierdo) -->
+                        <div class="col-md-4 mx-2" id="categoryForm">
+                            <div class="card p-4 shadow-lg" style="border-radius: 20px; max-width: 400px;">
+                                <h4 class="text-center">Crear Categorías</h4>
+                                <br>
+                                <form action="/admin/categories" method="post">
+                                    <div class="mb-3">
+                                        <label for="categoryName" class="form-label">Nombre de la Categoría</label>
+                                        <input type="text" class="form-control" id="categoryName" name="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="categoryStatus" class="form-label">Estado de la Categoría</label>
+                                        <select class="form-control" id="categoryStatus" name="status" required>
+                                            <option value="ACTIVO">Activo</option>
+                                            <option value="INACTIVO">Inactivo</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-info">Crear Categoría <i class="fa-regular fa-share-from-square"></i></button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Formulario Agregar Producto (lado derecho) -->
+                        <div class="col-md-4 mx-2">
+                            <div class="card p-4 shadow-lg" style="border-radius: 20px; max-width: 400px;">
+                                <h4 class="text-center">Crear Productos</h4>
+                                <br>
+                                <form action="/admin/products" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" id="id" name="id">
+                                    <div class="mb-3">
+                                        <label for="category" class="form-label">Categoría</label>
+                                        <select class="form-control" id="category" name="categoryId" required>
+                                            <option value="">Seleccionar Categoría</option>
+                                            <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nombre del Producto</label>
+                                        <input type="text" class="form-control" id="name" name="name" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Descripción</label>
+                                        <textarea class="form-control" id="description" name="description" required></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="code" class="form-label">Código del Producto</label>
+                                        <input type="text" class="form-control" id="code" name="code" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Precio</label>
+                                        <input type="number" step="0.01" class="form-control" id="price" name="price" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Imagen del Producto</label>
+                                        <input type="file" class="form-control" id="image" name="file">
+                                    </div>
+                                    <button type="submit" class="btn btn-outline-info">Crear Producto <i class="fa-regular fa-share-from-square"></i></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container mt-5 my-5"  id="productList" style="display:none;">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <h4 class="text-center">Productos Existentes</h4>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th>Código</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Imagen</th>
+                                        <th>Editar</th>
+                                        <th>Eliminar</th>
+                                        <th>inventario</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="product : ${products}">
+                                        <td th:text="${product.name}"></td>
+                                        <td th:text="${product.description}"></td>
+                                        <td th:text="${product.code}"></td>
+                                        <td th:text="${product.price}"></td>
+                                        <td th:text="${product.balance}"></td>
+                                        <td>
+                                            <!-- Mostrar la imagen del producto si existe -->
+                                            <img th:src="${product.image != null} ? @{/images/} + ${product.image} : '/images/default.png'" 
+                                                 alt="Imagen del producto" 
+                                                 class="img-thumbnail" 
+                                                 style="width: 50px;">
+                                        </td>
+
+                                        <td>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-warning"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#editProductModal"
+                                                th:data-id="${product.id}"
+                                                th:data-name="${product.name}"
+                                                th:data-description="${product.description}"
+                                                th:data-code="${product.code}"
+                                                th:data-price="${product.price}"
+                                                th:data-image="@{${product.image}}">
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/products/delete/{id}(id=${product.id})}" 
+                                               class="btn btn-outline-danger"
+                                               onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                                <i class="fa-regular fa-trash-can"></i>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a th:href="@{/admin/products/stock/{id} (id = ${product.id})}" 
+                                               class="btn btn-outline-secondary">
+                                                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="container mt-5 my-5"  id="purchasedProductsList" style="display:none;">
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <h2 class="text-center">Historial de Compras</h2>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Producto</th>
+                                        <th>Código</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio Total</th>
+                                        <th>Imagen Pro.</th>
+                                        <th>Comp. Pago</th>
+                                        <th>Ag. Envio</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="detail : ${allPurchasedDetails}">
+                                        <td th:text="${detail.order.user.username}"></td>
+                                        <td th:text="${detail.product.name}"></td>
+                                        <td th:text="${detail.product.code}"></td>
+                                        <td th:text="${detail.quantity}"></td>
+                                        <td th:text="${detail.price.multiply(detail.quantity)} + ' soles'"></td>
+                                        <td><img th:src="@{/images/{img}(img=${detail.product.image})}" alt="Imagen del Producto" style="width: 50px; height: auto;"></td>
+                                        <td th:each="payment : ${allPayments}" th:if="${payment.order.id == detail.order.id}">
+                                            <img th:src="@{/images/{img}(img=${payment.imagePago})}" alt="Comprobante de Pago" style="width: 50px; height: auto;">
+                                        </td>
+                                        <td>
+                                            <a href="#" class="btn btn-outline-primary"> <i class="fa-solid fa-truck-fast"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+        <!-- Modal de Edición de Producto -->
+        <div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="/admin/products/update" method="post" enctype="multipart/form-data">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProductModalLabel">Editar Producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="edit-id" name="id">
+
+                            <div class="mb-3">
+                                <label for="edit-name" class="form-label">Nombre del Producto</label>
+                                <input type="text" class="form-control" id="edit-name" name="name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit-description" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="edit-description" name="description" required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit-code" class="form-label">Código del Producto</label>
+                                <input type="text" class="form-control" id="edit-code" name="code" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit-price" class="form-label">Precio</label>
+                                <input type="number" step="0.01" class="form-control" id="edit-price" name="price" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit-image" class="form-label">Imagen del Producto</label>
+                                <input type="file" class="form-control" id="edit-image" name="file">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-square-xmark"></i></button>
+                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-square-check"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <br> 
+        <br>
+        <div th:insert="~{he_fo_ad::footer}"></div>
+    </body>
+    <script th:src="@{/js/admin.js}" type="text/javascript"></script>
+</html>

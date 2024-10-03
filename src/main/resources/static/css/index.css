@@ -1,0 +1,177 @@
+.badge-sm {
+    font-size: 0.6rem; /* Ajusta el tamaño del texto del badge */
+    width: 1.2rem; /* Ajusta el ancho del badge */
+    height: 1.2rem; /* Ajusta la altura del badge */
+    line-height: 1.2rem; /* Alinea el texto verticalmente */
+    padding: 0.05rem; /* Ajusta el relleno para centrar el texto */
+}
+.no-underline {
+    text-decoration: none;
+    color: inherit;
+}
+.titulo {
+    margin: 0 10px;
+    position: relative;
+}
+
+.titulo a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.titulo a::after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.3s ease;
+}
+
+.titulo a:hover {
+    color: white;
+}
+
+.titulo a:hover::after {
+    width: 100%;
+}
+/* Establecer una altura fija para el contenedor de la imagen */
+.image1-container {
+    height: 200px; /* Ajusta la altura según tu diseño */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Asegurarse de que las imágenes se ajusten correctamente al contenedor */
+.image1-container img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+}
+
+/* Establecer una altura fija para el contenedor de la imagen */
+.image2-container {
+    height: 600px; /* Ajusta la altura según tu diseño */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+
+
+
+
+
+/* Estilos personalizados para la presentación del producto */
+h1.display-5 {
+    font-size: 2.5rem; /* Tamaño más grande */
+    font-weight: bold; /* Negrita */
+}
+
+p.lead {
+    font-size: 1.2rem; /* Tamaño más grande */
+    line-height: 1.6;  /* Mejor separación entre líneas */
+    color: #6c757d;    /* Color de texto secundario */
+}
+
+h3.text-success {
+    font-size: 2rem; /* Precio más grande */
+    color: #28a745; /* Color verde */
+}
+
+/* Estilos del botón */
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 1.2rem;
+}
+
+
+/* Asegurarse de que las imágenes se ajusten correctamente al contenedor */
+.image2-container img {
+    height: 100%;
+    width: auto;
+    object-fit: cover;
+}
+
+
+
+/* Estilos personalizados para el modal */
+.custom-modal .modal-content {
+    border-radius: 15px;
+    border: 2px solid #F4B5C7; /* Color pastel para el borde */
+    background-color: #f1faee; /* Fondo pastel claro */
+}
+.custom-modal .modal-header {
+    border-bottom: none;
+}
+.custom-modal .modal-body {
+    text-align: center;
+}
+.custom-modal .alert-icon {
+    font-size: 4rem;
+    color: #e63946; /* Color rojo pastel para el ícono de alerta */
+    margin-bottom: 20px;
+}
+.custom-modal .btn-custom {
+    border-radius: 25px;
+    padding: 10px 20px;
+}
+.custom-modal .btn-login {
+    background-color: #457b9d;
+    color: #fff;
+    border: none;
+}
+.custom-modal .btn-close-modal {
+    background-color: #E58C8A;
+    color: #fff;
+    border: none;
+}
+.custom-modal .btn-login:hover {
+    background-color: #1d3557;
+}
+.custom-modal .btn-close-modal:hover {
+    background-color: #A4031F;
+}
+
+
+
+
+.socialIcons {
+    display: flex;
+    justify-content: center;
+}
+
+.socialIcons a {
+    text-decoration: none;
+    padding: 5px;
+    background-color: white;
+    margin: 5px;
+    border-radius: 50%; /* Hacer los contornos circulares */
+    width: 30px; /* Asegurar que el ancho sea fijo */
+    height: 30px; /* Asegurar que la altura sea fija */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrar los iconos vertical y horizontalmente */
+}
+
+.socialIcons a i {
+    font-size: 1em;
+    color: black;
+    opacity: 0.9;
+}
+
+.socialIcons a:hover {
+    background-color: black;
+    transition: 0.5s;
+}
+
+.socialIcons a:hover i {
+    color: white;
+    transition: 0.5s;
+}
+

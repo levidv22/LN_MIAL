@@ -1,0 +1,33 @@
+.socialIcons {
+    display: flex;
+    justify-content: center;
+}
+
+.socialIcons a {
+    text-decoration: none;
+    padding: 5px;
+    background-color: white;
+    margin: 5px;
+    border-radius: 50%; /* Hacer los contornos circulares */
+    width: 30px; /* Asegurar que el ancho sea fijo */
+    height: 30px; /* Asegurar que la altura sea fija */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrar los iconos vertical y horizontalmente */
+}
+
+.socialIcons a i {
+    font-size: 1em;
+    color: black;
+    opacity: 0.9;
+}
+
+.socialIcons a:hover {
+    background-color: black;
+    transition: 0.5s;
+}
+
+.socialIcons a:hover i {
+    color: white;
+    transition: 0.5s;
+}

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="head">
+        <title>LN_MIAL</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/css/dropdown.css}" rel="stylesheet" type="text/css"/>
+        <link th:href="@{/css/admin.css}" rel="stylesheet" type="text/css"/>
+        <script th:src="@{/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
+        <link rel="icon" type="image/x-icon" th:href="@{/img/logo2.png}">
+        <script src="https://kit.fontawesome.com/d8e40fe595.js" crossorigin="anonymous"></script>
+
+    </head>
+
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #A3E7FC;">
+            <div class="container">
+                <a class="navbar-brand" th:href="@{/admin/products}">
+                    <img th:src="@{/img/logo2.png}" class="img-logo" alt="Logo" width="80">
+                </a>
+                <!-- Botón de toggle para móviles -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav w-100 d-flex justify-content-center">
+                        <!-- Botones centrados -->
+                        <li th:if="${session.username != null}" class="nav-item">
+                            <button class="btn btn-outline-primary me-2" id="showFormButton">
+                                <i class="fa-regular fa-square-plus"></i>
+                            </button>
+                            <button class="btn btn-outline-secondary me-2" id="showProductsButton">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                            </button>
+                            <button class="btn btn-outline-success" id="showPurchasedProductsButton">
+                                <i class="fa-solid fa-shopping-cart"></i>
+                            </button>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto">
+                        <li th:if="${session.username != null}" class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-black" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-regular fa-user"></i> [[${session.username}]]
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item text-center">[[${session.username}]]</a></li>
+                                <li><a class="dropdown-item text-center">[[${session.email}]]</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar Sesión</a></li>
+                            </ul>
+                        </li>
+                        <li th:if="${session.username == null}" class="nav-item">
+                            <a class="nav-link" href="/login">Iniciar Sesión</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+    <!-- Footer -->
+    <footer th:fragment="footer" class="text-black py-4" style="background-color: #A3E7FC;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <h5 class="text-uppercase">LN_MIAL</h5>
+                    <p class="mb-0">&copy; 2024 LN_MIAL. Todos los derechos reservados.</p>
+                    <p class="mb-0">Consulta nuestra <a href="#" target="_blank">Política de privacidad</a> y <a href="#" target="_blank">Términos de uso</a></p>
+                </div>
+
+                <div class="col-md-4 mb-3 mb-md-0 text-center">
+                    <h5 class="text-uppercase">Síguenos</h5>
+                    <div class="socialIcons">
+                        <a href="https://facebook.com" target="_blank" class="text-black me-3">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com" target="_blank" class="text-black me-3">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" class="text-black me-3">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://wa.me/51928581983" target="_blank" class="text-black me-3">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" class="text-black me-3">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 text-md-end text-center">
+                    <h5 class="text-uppercase">Contáctanos</h5>
+                    <p class="mb-0">
+                        <i class="fas fa-envelope me-2"></i> soportelnmial@gmail.com
+                    </p>
+                    <p class="mb-0">
+                        <i class="fas fa-phone-alt me-2"></i> +51 928 581 983
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</html>
