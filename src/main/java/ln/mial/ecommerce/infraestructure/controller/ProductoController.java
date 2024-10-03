@@ -75,7 +75,7 @@ public class ProductoController {
     }
 
     @PostMapping
-    public String addProduct(ProductosEntity product, @RequestParam("file") MultipartFile multipartfile, @RequestParam("categoryId") Integer categoryId, @RequestParam("stockQuantity") Integer stockQuantity, HttpSession session) throws IOException {
+    public String addProduct(ProductosEntity product, @RequestParam("file") MultipartFile multipartfile, @RequestParam("categoryId") Integer categoryId, HttpSession session) throws IOException {
         CategoriasEntity category = categoriasService.getCategoryById(categoryId);
         product.setCategory(category);  // Set selected category
         productService.saveProduct(product, multipartfile, session);
