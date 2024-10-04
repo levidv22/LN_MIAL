@@ -49,13 +49,3 @@ window.onload = function () {
     productList.style.display = 'none';
     purchasedProductsList.style.display = 'none';
 };
-
-
-function updateStockValue() {
-    const productId = document.getElementById('productSelect').value;
-    fetch(`/admin/warehouse/stock/${productId}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('stockQuantity').value = data.stockQuantity;
-            });
-}
