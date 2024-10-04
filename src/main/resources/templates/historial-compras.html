@@ -12,19 +12,35 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Nombre Producto</th>
+                                <th>Productos</th>
                                 <th>Cantidad</th>
                                 <th>Precio Unitario</th>
                                 <th>Total</th>
+                                <th>Comp. de Pago</th>
                                 <th>Fecha de Envío</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="detail : ${purchasedDetails}">
-                                <td th:text="${detail.product.name}"></td>
-                                <td th:text="${detail.quantity}"></td>
-                                <td th:text="${detail.price} + ' soles'"></td>
-                                <td th:text="${detail.price.multiply(detail.quantity)} + ' soles'"></td>
+                            <tr th:each="pedidoAgrupado : ${pedidosAgrupados}">
+                                <td>
+                                    <ul>
+                                        <li th:each="detalle : ${pedidoAgrupado.detallesPedido}" th:text="${detalle.product.name}"></li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li th:each="detalle : ${pedidoAgrupado.detallesPedido}" th:text="${detalle.quantity}"></li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li th:each="detalle : ${pedidoAgrupado.detallesPedido}" th:text="${detalle.price} + ' soles'"></li>
+                                    </ul>
+                                </td>
+                                <td th:text="${pedidoAgrupado.totalAmount} + ' soles'"></td>
+                                <td>
+                                    <img th:src="@{/images/{img}(img=${pedidoAgrupado.imagenPago})}" alt="Comprobante de Pago" style="width: 80px; height: auto;">
+                                </td>
                                 <td>
                                     <a href="#" class="btn btn-outline-primary"> <i class="fa-solid fa-truck-fast"></i></a>
                                 </td>

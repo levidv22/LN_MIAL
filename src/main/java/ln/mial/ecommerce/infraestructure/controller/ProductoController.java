@@ -3,6 +3,7 @@ package ln.mial.ecommerce.infraestructure.controller;
 import jakarta.servlet.http.*;
 import java.io.*;
 import java.util.*;
+import ln.mial.ecommerce.DTO.PedidoAgrupadoDTO;
 import ln.mial.ecommerce.app.service.*;
 import ln.mial.ecommerce.infraestructure.entity.*;
 import org.slf4j.*;
@@ -32,9 +33,6 @@ public class ProductoController {
         this.pagosService = pagosService;
     }
 
-
-    
-
     @GetMapping
     public String showProducts(Model model) {
         Iterable<ProductosEntity> products = productService.getProducts();
@@ -53,24 +51,30 @@ public class ProductoController {
         model.addAttribute("products", products);
         model.addAttribute("categories", categories); // Añadir las categorías al modelo
 
+        
         List<PedidosEntity> allPaidOrders = pedidosService.getOrdersByStatus(StatusPedido.PAGADO);
 
-        // Crear una lista de DetallePedidosEntity que combine los detalles de todos los pedidos pagados
-        List<DetallePedidosEntity> allPurchasedDetails = new ArrayList<>();
+        // Crear una lista para los detalles agrupados por pedido
+        List<PedidoAgrupadoDTO> pedidosAgrupados = new ArrayList<>();
+
         for (PedidosEntity order : allPaidOrders) {
-            allPurchasedDetails.addAll(detallePedidosService.getOrderDetailsByOrder(order));
+            List<DetallePedidosEntity> orderDetails = detallePedidosService.getOrderDetailsByOrder(order);
+            PagosEntity payment = pagosService.getPaymentsByOrder(order).stream().findFirst().orElse(null);
+
+            PedidoAgrupadoDTO pedidoAgrupado = new PedidoAgrupadoDTO();
+            pedidoAgrupado.setUsername(order.getUser().getUsername());
+            pedidoAgrupado.setDetallesPedido(orderDetails);
+            pedidoAgrupado.setTotalAmount(order.getTotalAmount());
+            pedidoAgrupado.setImagenPago(payment != null ? payment.getImagePago() : null);
+
+            pedidosAgrupados.add(pedidoAgrupado);
         }
 
-        // Obtener los pagos realizados
-        List<PagosEntity> allPayments = new ArrayList<>();
-        for (PedidosEntity order : allPaidOrders) {
-            List<PagosEntity> payments = pagosService.getPaymentsByOrder(order);
-            allPayments.addAll(payments);
-        }
+        // Invertir la lista para mostrar los más recientes primero
+        Collections.reverse(pedidosAgrupados);
 
-        // Añadir los detalles de pedidos y pagos al modelo
-        model.addAttribute("allPurchasedDetails", allPurchasedDetails);
-        model.addAttribute("allPayments", allPayments);
+        // Añadir los detalles agrupados al modelo
+        model.addAttribute("pedidosAgrupados", pedidosAgrupados);
         return "admin";
     }
 

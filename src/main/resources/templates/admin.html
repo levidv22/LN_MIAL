@@ -155,25 +155,41 @@
                                 <thead>
                                     <tr>
                                         <th>Usuario</th>
-                                        <th>Producto</th>
+                                        <th>Productos</th>
                                         <th>Código</th>
                                         <th>Cantidad</th>
-                                        <th>Precio Total</th>
                                         <th>Imagen Pro.</th>
-                                        <th>Comp. Pago</th>
+                                        <th>Pago Total</th>
+                                        <th>Comp. de Pago</th>
                                         <th>Ag. Envio</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="detail : ${allPurchasedDetails}">
-                                        <td th:text="${detail.order.user.username}"></td>
-                                        <td th:text="${detail.product.name}"></td>
-                                        <td th:text="${detail.product.code}"></td>
-                                        <td th:text="${detail.quantity}"></td>
-                                        <td th:text="${detail.price.multiply(detail.quantity)} + ' soles'"></td>
-                                        <td><img th:src="@{/images/{img}(img=${detail.product.image})}" alt="Imagen del Producto" style="width: 50px; height: auto;"></td>
-                                        <td th:each="payment : ${allPayments}" th:if="${payment.order.id == detail.order.id}">
-                                            <img th:src="@{/images/{img}(img=${payment.imagePago})}" alt="Comprobante de Pago" style="width: 50px; height: auto;">
+                                    <tr th:each="pedidoAgrupado : ${pedidosAgrupados}">
+                                        <td th:text="${pedidoAgrupado.username}"></td>
+                                        <td>
+                                            <ul>
+                                                <li th:each="detalle : ${pedidoAgrupado.detallesPedido}" th:text="${detalle.product.name}"></li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li th:each="detalle : ${pedidoAgrupado.detallesPedido}" th:text="${detalle.product.code}"></li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <ul>
+                                                <li th:each="detalle : ${pedidoAgrupado.detallesPedido}" th:text="${detalle.quantity}"></li>
+                                            </ul>
+                                        </td>
+                                        <td>
+                                            <div th:each="detalle : ${pedidoAgrupado.detallesPedido}">
+                                                <img th:src="@{/images/{img}(img=${detalle.product.image})}" alt="Imagen del Producto" style="width: 30px; height: auto;">
+                                            </div>
+                                        </td>
+                                        <td th:text="${pedidoAgrupado.totalAmount} + ' soles'"></td>
+                                        <td>
+                                            <img th:src="@{/images/{img}(img=${pedidoAgrupado.imagenPago})}" alt="Comprobante de Pago" style="width: 80px; height: auto;">
                                         </td>
                                         <td>
                                             <a href="#" class="btn btn-outline-primary"> <i class="fa-solid fa-truck-fast"></i></a>
