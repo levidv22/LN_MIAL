@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/admin/products/stock")
 public class AlmacenController {
+
     private final AlmacenService stockService;
     private final ValidateStock validateStock;
 
@@ -23,36 +24,47 @@ public class AlmacenController {
         this.stockService = stockService;
         this.validateStock = validateStock;
     }
+
     @GetMapping("/{id}")
-    public String show(@PathVariable Integer id, Model model){
+    public String show(@PathVariable Integer id, Model model) {
         ProductosEntity product = new ProductosEntity();
         product.setId(id);
         List<AlmacenEntity> stocks = stockService.getStockByProductEntity(product);
         model.addAttribute("stocks", stocks);
         model.addAttribute("idproduct", id);
         return "show";
-        
+
     }
+
     @GetMapping("create/{id}")
-    public String create(@PathVariable Integer id, Model model){
+    public String create(@PathVariable Integer id, Model model) {
         model.addAttribute("idproduct", id);
-      return"create";  
-    } 
-    
-    @PostMapping
-    public String save(AlmacenEntity stock, @RequestParam("idproduct") Integer idproduct){
-      stock.setDescripcion("entradas");
-      ProductosEntity product = new ProductosEntity();
-      product.setId(idproduct);
-      stock.setProductosEntity(product);
-      stockService.saveStock(validateStock.calculateBalance(stock));
-      return "redirect:/admin/products";
+        return "create";
     }
-    
+
+    @PostMapping
+    public String save(AlmacenEntity stock, @RequestParam("idproduct") Integer idproduct) {
+        ProductosEntity product = new ProductosEntity();
+        product.setId(idproduct);
+
+        AlmacenEntity existingStock = stockService.getStockByProduct(product);
+
+        if (existingStock != null) {
+            // Si el inventario ya existe, actualiza la entrada y el balance
+            stockService.updateStock(existingStock, stock.getEntradas());
+        } else {
+            // Si no existe, crea un nuevo registro
+            stock.setDescripcion("entradas");
+            stock.setProductosEntity(product);
+            stockService.saveStock(validateStock.calculateBalance(stock));
+        }
+
+        return "redirect:/admin/products";
+    }
+
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable Integer id) {
         stockService.deleteStockById(id);
         return "redirect:/admin/products";
     }
 }
-

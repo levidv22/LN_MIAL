@@ -24,16 +24,16 @@ public class AlmacenService {
     public boolean deleteStockById(Integer id) {
         return stockRepository.deleteStockById(id);
     }
+    
+    public AlmacenEntity getStockByProduct(ProductosEntity product) {
+        List<AlmacenEntity> stocks = stockRepository.getStockByProductEntity(product);
+        return stocks.isEmpty() ? null : stocks.get(0);  // Devuelve el primer registro si existe
+    }
 
-    public AlmacenEntity updateStockAfterOrder(AlmacenEntity stock, int quantity) {
-        int newSalidas = stock.getSalidas() + quantity;
-        stock.setSalidas(newSalidas);
-
-        // Calcular el nuevo balance
-        int newBalance = stock.getEntradas() - newSalidas;
-        stock.setBalance(newBalance);
-
-        return stockRepository.saveStock(stock);
+    public AlmacenEntity updateStock(AlmacenEntity existingStock, int newEntrada) {
+        existingStock.setEntradas(existingStock.getEntradas() + newEntrada);
+        existingStock.setBalance(existingStock.getBalance() + newEntrada);
+        return stockRepository.saveStock(existingStock);
     }
 
 }
